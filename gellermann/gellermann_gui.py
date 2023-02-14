@@ -79,7 +79,7 @@ class MainWindow(QtWidgets.QMainWindow):
         input_layout.addRow("Sequence &length:", self._sequence_length_spinbox)
         input_layout.addRow("&Number of sequences:", self._number_of_sequences_spinbox)
         input_layout.addRow("&Alternation tolerance:", self._alternation_tolerance_spinbox)
-        input_layout.addRow("Element names:", self._option1_lineedit)
+        input_layout.addRow("Choices:", self._option1_lineedit)
         input_layout.addRow("", self._option2_lineedit)
         input_layout.addRow(generate_button)
 
@@ -134,14 +134,14 @@ class MainWindow(QtWidgets.QMainWindow):
         n = self._sequence_length_spinbox.value()
         k = self._number_of_sequences_spinbox.value()
         alternation_tolerance = self._alternation_tolerance_spinbox.value()
-        symbols = (self._option1_lineedit.text(), self._option2_lineedit.text())
+        choices = (self._option1_lineedit.text(), self._option2_lineedit.text())
 
         progress_dialog = QtWidgets.QProgressDialog("Generating series...", "Cancel", 0, k, self)
         progress_dialog.setMinimumDuration(500)
         progress_dialog.setModal(True)
 
         self._series = []
-        for s in gellermann.generate_gellermann_series(n, k, alternation_tolerance=alternation_tolerance, symbols=symbols):
+        for s in gellermann.generate_gellermann_series(n, k, alternation_tolerance=alternation_tolerance, choices=choices):
             self._series.append(s)
             progress_dialog.setValue(len(self._series))
             if progress_dialog.wasCanceled():
