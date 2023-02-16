@@ -214,12 +214,14 @@ def generate_all_gellermann_series(n: int, choices: Tuple[Any, Any] = ('A', 'B')
 
 def _series_to_wide_format_df(series_list: List[Sequence[Any]]) -> pd.DataFrame:
     """Convert a list of series to a wide format DataFrame."""
+
     series_dicts = [{'series_i': i, **{f'element_{j}': x for j, x in enumerate(s)}} for i, s in enumerate(series_list)]
     return pd.DataFrame(series_dicts).set_index('series_idx')
 
 
 def _series_to_long_format_df(series_list: List[Sequence[Any]]) -> pd.DataFrame:
     """Convert a list of series to a long format DataFrame."""
+
     series_dicts = [{'series_i': i, 'element_i': j, 'element': e} for i, s in enumerate(series_list) for j, e in enumerate(s)]
     return pd.DataFrame(series_dicts).set_index(['series_idx', 'element_idx'])
 

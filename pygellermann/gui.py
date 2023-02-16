@@ -212,6 +212,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
 def main():
+    import signal
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
+
     app = QtWidgets.QApplication(sys.argv)
     main_window = MainWindow()
     main_window.show()
