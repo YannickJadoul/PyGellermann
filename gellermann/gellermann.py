@@ -173,8 +173,8 @@ def generate_gellermann_series(n: int, m: int, choices: Tuple[Any, Any] = ('A', 
     
     Yields
     ------
-    list
-        A Gellermann series of length n.
+    Iterator[Sequence[Any]]
+        A generator object with m Gellermann series of length n.
     """
     for s in generate_boolean_gellermann_series(n, m, rng=rng, **kwargs):
         yield [choices[x] for x in s]
@@ -191,7 +191,7 @@ def generate_all_boolean_gellermann_series(n, **kwargs) -> Iterator[BoolSequence
 
 
 def generate_all_gellermann_series(n: int, choices: Tuple[Any, Any] = ('A', 'B'), **kwargs) -> Iterator[Sequence[Any]]:
-    """Generate all Gellermann series of length n.
+    """Generate all Gellermann series of length n in lexicographic order.
 
     Parameters
     ----------
@@ -204,8 +204,8 @@ def generate_all_gellermann_series(n: int, choices: Tuple[Any, Any] = ('A', 'B')
 
     Yields
     ------
-    list
-        A Gellermann series of length n.
+    Iterator[Sequence[Any]]
+        A generator object with all Gellermann series of length n.
     """
 
     for s in generate_all_boolean_gellermann_series(n, **kwargs):
