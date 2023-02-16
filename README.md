@@ -147,7 +147,9 @@ The Python API consists of 4 simple functions:
 
 ## License
 
-PyGellermann is released under the GNU General Public License, version 3 or later. See the LICENSE file for details.
+PyGellermann is released under the GNU General Public License v3 or later. See the LICENSE file for details.
+
+PyGellermann was developed at the [Comparative Bioacoustics Group](https://www.mpi.nl/department/comparative-bioacoustics/20) of the [Max Planck Institute for Psycholinguistics](https://www.mpi.nl/), Nijmegen, the Netherlands.
 
 ## References
 
