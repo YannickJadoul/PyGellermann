@@ -37,7 +37,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setMinimumWidth(500)
 
         self._sequence_length_spinbox = QtWidgets.QSpinBox()
-        self._sequence_length_spinbox.setRange(10, 100)
+        self._sequence_length_spinbox.setRange(2, 100)
+        self._sequence_length_spinbox.setSingleStep(2)
         self._sequence_length_spinbox.setValue(10)
         self._number_of_sequences_spinbox = QtWidgets.QSpinBox()
         self._number_of_sequences_spinbox.setRange(1, 1000)
@@ -132,20 +133,29 @@ class MainWindow(QtWidgets.QMainWindow):
             return
 
         n = self._sequence_length_spinbox.value()
-        k = self._number_of_sequences_spinbox.value()
+        m = self._number_of_sequences_spinbox.value()
         alternation_tolerance = self._alternation_tolerance_spinbox.value()
         choices = (self._option1_lineedit.text(), self._option2_lineedit.text())
 
-        progress_dialog = QtWidgets.QProgressDialog("Generating series...", "Cancel", 0, k, self)
+        if n % 2:
+            QtWidgets.QMessageBox.critical(self, "Error", "PyGellermann cannot yet generate odd length Gellermann series.")
+            return
+
+        progress_dialog = QtWidgets.QProgressDialog("Generating series...", "Cancel", 0, m, self)
         progress_dialog.setMinimumDuration(500)
         progress_dialog.setModal(True)
 
         self._series = []
-        for s in gellermann.generate_gellermann_series(n, k, alternation_tolerance=alternation_tolerance, choices=choices):
-            self._series.append(s)
-            progress_dialog.setValue(len(self._series))
-            if progress_dialog.wasCanceled():
-                break
+        try:
+            for s in gellermann.generate_gellermann_series(n, m, alternation_tolerance=alternation_tolerance, choices=choices):
+                self._series.append(s)
+                progress_dialog.setValue(len(self._series))
+                if progress_dialog.wasCanceled():
+                    break
+        except Exception as e:
+            QtWidgets.QMessageBox.critical(self, "Error", f"An unexpected error occurred: {e}")
+            progress_dialog.close()
+            return
         
         if progress_dialog.wasCanceled():
             self._series = []
