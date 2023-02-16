@@ -15,7 +15,7 @@ Alternatively, you can download the GUI as a standalone executable for Linux, ma
 ### Graphical User Interface
 After installation, you can run the GUI by typing `pygellermann-gui` in your terminal or by running the standalone executable (`PyGellermann`, `PyGellermann.app`, or `PyGellermann.exe`). The following window should appear:
 
-![PyGellermann GUI](docs/gui.png)
+![PyGellermann GUI](https://raw.githubusercontent.com/YannickJadoul/PyGellermann/main/docs/gui.png)
 
 Four parameters can be set to customize the generated Gellermann series:
 - *Sequence length*: The length of each generated sequence.
