@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pygellermann"
+description = "A Python Gellermann series generator"
+license = { text = " GPL-3.0-or-later" }
+authors = [
+    { name = "Yannick Jadoul", email = "Yannick.Jadoul@mpi.nl" }
+]
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "pandas",
+    "qtpy",
+    "PyQt6",
+]
+dynamic = ["version"]
+
+[project.gui-scripts]
+pygellermann-gui = "pygellermann.gui:main"
+
+[tool.setuptools_scm]
+write_to = "pygellermann/_version.py"
