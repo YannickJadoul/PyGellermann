@@ -32,8 +32,12 @@ import numpy.typing as npt
 DEFAULT_ALTERNATION_TOLERANCE = 0.1
 
 
-N = TypeVar('N')
-BoolSequence = np.ndarray[N, np.bool_]
+try:
+    N = TypeVar('N')
+    BoolSequence = np.ndarray[N, np.bool_]
+except TypeError:
+    # Python < 3.9
+    BoolSequence = npt.ArrayLike
 
 
 def balanced_elements(s: BoolSequence) -> bool:
