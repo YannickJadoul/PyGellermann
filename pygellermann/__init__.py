@@ -1,3 +1,4 @@
+from ._version import __version__
 from .gellermann import (
     DEFAULT_ALTERNATION_TOLERANCE,
     is_gellermann_series,
