@@ -153,4 +153,4 @@ PyGellermann was developed at the [Comparative Bioacoustics Group](https://www.m
 
 ## References
 
-[^Gellermann1933]: Gellermann, L. W. (1933). Chance orders of alternating stimuli in visual discrimination experiments. *The journal of genetic psychology, 42*, 206-208.
+[^Gellermann1933]: Gellermann, L. W. (1933). Chance orders of alternating stimuli in visual discrimination experiments. *The Journal of Genetic Psychology, 42*, 206-208.
