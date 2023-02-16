@@ -135,6 +135,7 @@ def is_gellermann_series(s: Sequence[Any], alternation_tolerance: float = DEFAUL
     if len(s) == 0:
         return True
 
+    s = list(s)
     return is_boolean_gellermann_series(np.array([x == s[0] for x in s]), alternation_tolerance=alternation_tolerance)
 
 
@@ -176,8 +177,9 @@ def generate_gellermann_series(n: int, m: int, choices: Tuple[Any, Any] = ('A', 
     Iterator[Sequence[Any]]
         A generator object with m Gellermann series of length n.
     """
+
     for s in generate_boolean_gellermann_series(n, m, rng=rng, **kwargs):
-        yield [choices[x] for x in s]
+        yield [choices[int(x)] for x in s]
 
 
 def generate_all_boolean_gellermann_series(n, **kwargs) -> Iterator[BoolSequence]:
@@ -209,21 +211,21 @@ def generate_all_gellermann_series(n: int, choices: Tuple[Any, Any] = ('A', 'B')
     """
 
     for s in generate_all_boolean_gellermann_series(n, **kwargs):
-        yield [choices[x] for x in s]
+        yield [choices[int(x)] for x in s]
 
 
 def _series_to_wide_format_df(series_list: List[Sequence[Any]]) -> pd.DataFrame:
     """Convert a list of series to a wide format DataFrame."""
 
     series_dicts = [{'series_i': i, **{f'element_{j}': x for j, x in enumerate(s)}} for i, s in enumerate(series_list)]
-    return pd.DataFrame(series_dicts).set_index('series_idx')
+    return pd.DataFrame(series_dicts).set_index('series_i')
 
 
 def _series_to_long_format_df(series_list: List[Sequence[Any]]) -> pd.DataFrame:
     """Convert a list of series to a long format DataFrame."""
 
     series_dicts = [{'series_i': i, 'element_i': j, 'element': e} for i, s in enumerate(series_list) for j, e in enumerate(s)]
-    return pd.DataFrame(series_dicts).set_index(['series_idx', 'element_idx'])
+    return pd.DataFrame(series_dicts).set_index(['series_i', 'element_i'])
 
 
 def generate_gellermann_series_table(n: int, m: int, long_format: bool = False, **kwargs):
