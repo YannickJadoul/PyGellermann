@@ -42,5 +42,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: executables
-          path: dist/pygellermann-gui
+          path: dist/pygellermann-gui*
           if-no-files-found: error
