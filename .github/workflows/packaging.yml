@@ -33,14 +33,30 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install pyinstaller
-      
+
       - name: Run PyInstaller
         run: |
-          pyinstaller --windowed --onefile scripts/pygellermann-gui.py
-      
+          pyinstaller --name PyGellermann --windowed --onefile scripts/pygellermann-gui.py
+
+      - name: Package macOS App Bundle to DMG
+        if: runner.os == 'macOS'
+        run: |
+          brew install create-dmg
+          curl -O https://github.com/dmgbuild/dmgbuild/raw/main/src/dmgbuild/resources/builtin-arrow.tiff
+          create-dmg \
+            --volname "PyGellermann GUI" \
+            --background "builtin-arrow.tiff" \
+            --window-size 640, 280 \
+            --icon-size 128 \
+            --icon "PyGellermann.app" 140 120 \
+            --hide-extension "PyGellermann.app" \
+            --app-drop-link 500 120 \
+            "dist/PyGellermann.dmg" \
+            "dist/PyGellermann.app/"
+
       - name: Upload built executable
         uses: actions/upload-artifact@v3
         with:
           name: executables
-          path: dist/pygellermann-gui*
+          path: ${{ runner.os == 'macOS' && 'dist/PyGellermann.dmg' || runner.os == 'Windows' && 'dist/PyGellermann.exe' || 'dist/PyGellermann' }}
           if-no-files-found: error
