@@ -20,6 +20,7 @@ import numpy as np
 import pandas as pd
 
 import itertools
+import sys
 
 from typing import Any, Iterator, List, Sequence, Tuple, TypeVar
 import numpy.typing as npt
@@ -32,12 +33,11 @@ import numpy.typing as npt
 DEFAULT_ALTERNATION_TOLERANCE = 0.1
 
 
-try:
+if sys.version_info >= (3, 9):
     N = TypeVar('N')
-    BoolSequence = np.ndarray[N, np.bool_]
-except TypeError:
-    # Python < 3.9
-    BoolSequence = npt.ArrayLike
+    BoolSequence = np.ndarray[N, np.dtype[np.bool_]]
+else:
+    BoolSequence = npt.NDArray[np.bool_]
 
 
 def balanced_elements(s: BoolSequence) -> bool:
@@ -51,7 +51,7 @@ def more_than_three_successive(s: BoolSequence) -> bool:
     """Check if a boolean sequence has more than three True or False elements in a row."""
 
     successive = s[:-1] == s[1:]
-    return np.any(successive[:-2] & successive[1:-1] & successive[2:])
+    return bool(np.any(successive[:-2] & successive[1:-1] & successive[2:]))
 
 
 def at_least_twenty_percent_per_half(s: BoolSequence) -> bool:
@@ -59,7 +59,7 @@ def at_least_twenty_percent_per_half(s: BoolSequence) -> bool:
 
     n = len(s)
     p = n // 5
-    return np.sum(s[:n//2]) >= p and np.sum(~s[:n//2]) >= p and np.sum(s[n//2:]) >= p and np.sum(~s[n//2:]) >= p
+    return bool(np.sum(s[:n//2]) >= p and np.sum(~s[:n//2]) >= p and np.sum(s[n//2:]) >= p and np.sum(~s[n//2:]) >= p)
 
 
 def less_than_half_reversals(s: BoolSequence) -> bool:
@@ -193,7 +193,7 @@ def generate_all_boolean_gellermann_series(n, **kwargs) -> Iterator[BoolSequence
 
     for s in itertools.product([False, True], repeat=n):
         if is_boolean_gellermann_series(np.array(s), **kwargs):
-            yield s
+            yield np.array(s)
 
 
 def generate_all_gellermann_series(n: int, choices: Tuple[Any, Any] = ('A', 'B'), **kwargs) -> Iterator[Sequence[Any]]:
