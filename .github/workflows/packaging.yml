@@ -48,7 +48,7 @@ jobs:
           brew install create-dmg
           curl -O https://github.com/dmgbuild/dmgbuild/raw/main/src/dmgbuild/resources/builtin-arrow.tiff
           create-dmg \
-            --volname "PyGellermann GUI" \
+            --volname "PyGellermann" \
             --background "builtin-arrow.tiff" \
             --window-size 640, 280 \
             --icon-size 128 \
