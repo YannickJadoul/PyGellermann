@@ -93,3 +93,30 @@ jobs:
           name: executables
           path: dist/PyGellermann${{ runner.os == 'macOS' && '.dmg' || runner.os == 'Windows' && '.exe' || '' }}
           if-no-files-found: error
+
+  create_release:
+    name: Create release
+    runs-on: ubuntu-latest
+    if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+    needs: [build, pyinstaller]
+
+    steps:
+      - name: Collect wheel and sdist
+        uses: actions/download-artifact@v3
+        with:
+          name: packages
+          path: dist
+
+      - name: Collect executables
+        uses: actions/download-artifact@v3
+        with:
+          name: executables
+          path: dist
+
+      - name: Upload wheel, sdist, and executables to release
+        uses: ncipollo/release-action@v1
+        with:
+          name: ${{ github.ref_name }}
+          draft: true
+          artifacts: dist/*
+          token: ${{ secrets.GITHUB_TOKEN }}
