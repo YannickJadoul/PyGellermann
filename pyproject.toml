@@ -31,5 +31,8 @@ pygellermann-gui = "pygellermann.gui:main"
 [tool.setuptools_scm]
 write_to = "pygellermann/_version.py"
 
+[tool.check-manifest]
+ignore = ["pygellermann/_version.py"]
+
 [tool.mypy]
 plugins = "numpy.typing.mypy_plugin"
