@@ -36,7 +36,7 @@ jobs:
       
       - name: Run PyInstaller
         run: |
-          pyinstaller --windowed --onefile res/pyinstaller/pygellermann-gui.py
+          pyinstaller --windowed --onefile scripts/pygellermann-gui.py
       
       - name: Upload built executable
         uses: actions/upload-artifact@v3
