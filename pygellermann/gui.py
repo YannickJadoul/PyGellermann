@@ -26,6 +26,11 @@ import qdarktheme
 import sys
 
 
+class ShorterLineEdit(QtWidgets.QLineEdit):
+    def sizeHint(self):
+        return QtCore.QSize(20, super().sizeHint().height())
+
+
 class MainWindow(QtWidgets.QMainWindow):
     
     def __init__(self):
@@ -49,12 +54,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self._alternation_tolerance_spinbox.setSingleStep(0.01)
         self._alternation_tolerance_spinbox.setValue(0.1)
 
-        self._option1_lineedit = QtWidgets.QLineEdit()
+        self._option1_lineedit = ShorterLineEdit()
         self._option1_lineedit.setText("A")
-        self._option2_lineedit = QtWidgets.QLineEdit()
+        self._option2_lineedit = ShorterLineEdit()
         self._option2_lineedit.setText("B")
-        self._option1_lineedit.setSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred)
-        self._option2_lineedit.setSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred)
 
         generate_button = QtWidgets.QPushButton("Generate")
         generate_button.clicked.connect(self._generate)
@@ -174,10 +177,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self._results_table.setHorizontalHeaderLabels([""] * self._results_table.columnCount())
         min_width = (max(self._results_table.sizeHintForColumn(i) for i in range(self._results_table.columnCount())))
         self._results_table.horizontalHeader().setMinimumSectionSize(min_width)
-        self._results_table.setVisible(False)
         self._results_table.resizeColumnsToContents()
         self._results_table.resizeRowsToContents()
-        self._results_table.setVisible(True)
         self._results_widget.setVisible(True)
 
         self._was_saved = False
