@@ -21,6 +21,7 @@ from . import gellermann
 import pandas as pd
 
 from qtpy import QtCore, QtGui, QtWidgets
+import qdarktheme
 
 import sys
 
@@ -170,8 +171,13 @@ class MainWindow(QtWidgets.QMainWindow):
                 item = QtWidgets.QTableWidgetItem(element)
                 item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
                 self._results_table.setItem(i, j, item)
+        self._results_table.setHorizontalHeaderLabels([""] * self._results_table.columnCount())
+        min_width = (max(self._results_table.sizeHintForColumn(i) for i in range(self._results_table.columnCount())))
+        self._results_table.horizontalHeader().setMinimumSectionSize(min_width)
+        self._results_table.setVisible(False)
         self._results_table.resizeColumnsToContents()
         self._results_table.resizeRowsToContents()
+        self._results_table.setVisible(True)
         self._results_widget.setVisible(True)
 
         self._was_saved = False
@@ -225,7 +231,10 @@ def main():
     import signal
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
+    qdarktheme.enable_hi_dpi()
+
     app = QtWidgets.QApplication(sys.argv)
+    qdarktheme.setup_theme('auto')
     main_window = MainWindow()
     main_window.show()
     app.exec_()
