@@ -79,7 +79,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install create-dmg
-          curl -O https://github.com/dmgbuild/dmgbuild/raw/main/src/dmgbuild/resources/builtin-arrow.tiff
+          curl -O https://raw.githubusercontent.com/dmgbuild/dmgbuild/main/src/dmgbuild/resources/builtin-arrow.tiff
           create-dmg \
             --volname "PyGellermann" \
             --background "builtin-arrow.tiff" \
