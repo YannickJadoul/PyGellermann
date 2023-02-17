@@ -103,7 +103,7 @@ def is_gellermann_series(s: Sequence[Any], alternation_tolerance: float = DEFAUL
     Parameters
     ----------
     s
-        A binary series of even length, i.e. a sequence of two different elements.
+        A binary series (i.e., containing two different elements) of even length.
     alternation_tolerance
         The tolerance around 50% chance level compared to single or double alternation, a value
         between 0 and 0.5 (default: 0.1).

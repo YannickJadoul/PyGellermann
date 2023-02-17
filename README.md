@@ -1,6 +1,6 @@
 # PyGellerman: A Python Gellermann series generator
 
-This is a Python implementation of a random genenerator for Gellermann series, pseudorandom binary sequence for human and non-human animal behavioural experiments[^Gellermann1933]. It includes both a graphical user interface (GUI) as well as a simple Python API.
+This is a Python implementation of a random genenerator for Gellermann series, pseudorandom binary sequences for human and non-human animal behavioural experiments[^Gellermann1933]. It includes both a graphical user interface (GUI) as well as a simple Python API.
 
 ## Installation
 PyGellermann is available on PyPI and can be installed using pip:
@@ -37,7 +37,7 @@ The Python API consists of 4 simple functions:
   #### Parameters
   - `s` : `Sequence[Any]`
 
-    A binary series of even length, i.e. a sequence of two different elements.
+    A binary series (i.e., containing two different elements) of even length.
 
   - `alternation_tolerance` : `float`, optional
 
