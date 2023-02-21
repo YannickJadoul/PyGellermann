@@ -35,6 +35,16 @@ write_to = "pygellermann/_version.py"
 [tool.check-manifest]
 ignore = ["pygellermann/_version.py"]
 
+[tool.flake8]
+max-line-length = 160
+max-doc-length = 100
+docstring-convention = "numpy"
+per-file-ignores = [
+    "pygellermann/gui.py:D101,D102,D103",
+    "scripts/*:D100,D103",
+    "tests/*:D100,D103",
+]
+
 [tool.isort]
 multi_line_output = 3
 sections = ["FUTURE", "PYTEST", "QT", "LOCALFOLDER", "FIRSTPARTY", "THIRDPARTY", "STDLIB", "TYPING"]

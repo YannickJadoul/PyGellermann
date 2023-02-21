@@ -1,3 +1,5 @@
+"""Main PyGellermann module, containing all public functions."""
+
 from ._version import __version__
 from .gellermann import (
     DEFAULT_ALTERNATION_TOLERANCE,

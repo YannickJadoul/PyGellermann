@@ -15,12 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with PyGellermann.  If not, see <https://www.gnu.org/licenses/>.
 
+"""GUI wrapping functionality for generating Gellermann series."""
+
 
 from qtpy import QtCore, QtGui, QtWidgets
 
 from . import gellermann
 
-import pandas as pd
 import qdarktheme  # type: ignore
 
 import sys
@@ -113,24 +114,23 @@ class MainWindow(QtWidgets.QMainWindow):
         widget.setLayout(main_layout)
         self.setCentralWidget(widget)
 
-
     def closeEvent(self, event):
         if not self._check_unsaved_changes():
             event.ignore()
-
 
     def _check_unsaved_changes(self):
         if not self._series or self._was_saved:
             return True
 
-        reply = QtWidgets.QMessageBox.question(self, "Unsaved changes", "These generated Gellermann series have not been saved yet. Do you want to save them?", QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No | QtWidgets.QMessageBox.StandardButton.Cancel)
-        if reply == QtWidgets.QMessageBox.StandardButton.Yes:
+        StandardButton = QtWidgets.QMessageBox.StandardButton
+        message = "These generated Gellermann series have not been saved yet. Do you want to save them?"
+        reply = QtWidgets.QMessageBox.question(self, "Unsaved changes", message, StandardButton.Yes | StandardButton.No | StandardButton.Cancel)
+        if reply == StandardButton.Yes:
             return self._save()
-        elif reply == QtWidgets.QMessageBox.StandardButton.No:
+        elif reply == StandardButton.No:
             return True
         else:
             return False
-
 
     def _generate(self):
         if not self._check_unsaved_changes():
@@ -183,13 +183,11 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self._was_saved = False
 
-
     def _copy(self):
         row_strings = []
         for row in range(self._results_table.rowCount()):
             row_strings.append("\t".join(self._results_table.item(row, column).text() for column in range(self._results_table.columnCount())))
         QtWidgets.QApplication.clipboard().setText("\n".join(row_strings))
-
 
     def _clear(self):
         if not self._check_unsaved_changes():
@@ -199,7 +197,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self._results_table.clearContents()
         self._results_widget.setVisible(False)
         QtCore.QTimer.singleShot(0, self.adjustSize)
-
 
     def _save(self):
         formats = [

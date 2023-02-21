@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with PyGellermann.  If not, see <https://www.gnu.org/licenses/>.
 
+"""Functionality for checking and generating Gellermann series."""
 
 import numpy as np
 import pandas as pd
@@ -40,21 +41,18 @@ else:
 
 def balanced_elements(s: BoolSequence) -> bool:
     """Check if a boolean sequence has equal number of True and False elements."""
-
     n = len(s)
     return n % 2 == 0 and np.sum(s) == n // 2
 
 
 def more_than_three_successive(s: BoolSequence) -> bool:
     """Check if a boolean sequence has more than three True or False elements in a row."""
-
     successive = s[:-1] == s[1:]
     return bool(np.any(successive[:-2] & successive[1:-1] & successive[2:]))
 
 
 def at_least_twenty_percent_per_half(s: BoolSequence) -> bool:
-    """Check if a boolean sequence has at least 20% True or False elements both the first and second half."""
-
+    """Check if a boolean sequence has at least 20% True or False elements in both halves."""
     n = len(s)
     p = n // 5
     return bool(np.sum(s[:n//2]) >= p and np.sum(~s[:n//2]) >= p and np.sum(s[n//2:]) >= p and np.sum(~s[n//2:]) >= p)
@@ -62,14 +60,15 @@ def at_least_twenty_percent_per_half(s: BoolSequence) -> bool:
 
 def less_than_half_reversals(s: BoolSequence) -> bool:
     """Check if a boolean sequence has less than half True-False or False-True reversals."""
-
     return int(np.sum(s[:-1] != s[1:])) <= len(s) // 2
 
 
 def close_to_fifty_percent_alternation(s: BoolSequence, tolerance: float) -> bool:
-    """Check if a boolean sequence matches a single or double alternation sequences close to
-    50% chance level, +/- tolerance."""
+    """Check if a boolean sequence matches the single or double alternation criterion.
 
+    Checks if matches single or double alternating sequences sufficiently close to 50% chance
+    level, +/- tolerance.
+    """
     assert 0 <= tolerance <= 0.5
 
     n = len(s)
@@ -84,7 +83,6 @@ def close_to_fifty_percent_alternation(s: BoolSequence, tolerance: float) -> boo
 
 def is_boolean_gellermann_series(s: BoolSequence, alternation_tolerance: float = DEFAULT_ALTERNATION_TOLERANCE) -> bool:
     """Check if a boolean sequence is a Gellermann series."""
-
     assert len(s) % 2 == 0
     assert 0 <= alternation_tolerance <= 0.5
 
@@ -126,7 +124,6 @@ def is_gellermann_series(s: Sequence[Any], alternation_tolerance: float = DEFAUL
     >>> is_gellermann_series('1112212122122211', alternation_tolerance=0.0)
     False
     """
-
     if len(s) % 2 != 0:
         raise ValueError(f"Sequence length {len(s)} is not even.")
     if len(set(s)) > 2:
@@ -143,7 +140,6 @@ def is_gellermann_series(s: Sequence[Any], alternation_tolerance: float = DEFAUL
 
 def generate_boolean_gellermann_series(n: int, m: int, rng: Optional[np.random.Generator] = None, **kwargs: Any) -> Iterator[BoolSequence]:
     """Generate m random boolean Gellermann series of length n."""
-
     assert n % 2 == 0
     assert m > 0
 
@@ -157,7 +153,8 @@ def generate_boolean_gellermann_series(n: int, m: int, rng: Optional[np.random.G
             m -= 1
 
 
-def generate_gellermann_series(n: int, m: int, choices: Tuple[Any, Any] = ('A', 'B'), rng: Optional[np.random.Generator] = None, **kwargs: Any) -> Iterator[Sequence[Any]]:
+def generate_gellermann_series(n: int, m: int, choices: Tuple[Any, Any] = ('A', 'B'), rng: Optional[np.random.Generator] = None,
+                               **kwargs: Any) -> Iterator[Sequence[Any]]:
     """Generate m random Gellermann series of length n.
 
     Parameters
@@ -179,14 +176,12 @@ def generate_gellermann_series(n: int, m: int, choices: Tuple[Any, Any] = ('A', 
     Iterator[Sequence[Any]]
         A generator object with m Gellermann series of length n.
     """
-
     for s in generate_boolean_gellermann_series(n, m, rng=rng, **kwargs):
         yield [choices[int(x)] for x in s]
 
 
 def generate_all_boolean_gellermann_series(n: int, **kwargs: Any) -> Iterator[BoolSequence]:
     """Generate all boolean Gellermann series of length n."""
-
     assert n % 2 == 0
 
     for s in itertools.product([False, True], repeat=n):
@@ -211,21 +206,18 @@ def generate_all_gellermann_series(n: int, choices: Tuple[Any, Any] = ('A', 'B')
     Iterator[Sequence[Any]]
         A generator object with all Gellermann series of length n.
     """
-
     for s in generate_all_boolean_gellermann_series(n, **kwargs):
         yield [choices[int(x)] for x in s]
 
 
 def _series_to_wide_format_df(series_list: List[Sequence[Any]]) -> pd.DataFrame:
     """Convert a list of series to a wide format DataFrame."""
-
     series_dicts = [{'series_i': i, **{f'element_{j}': x for j, x in enumerate(s)}} for i, s in enumerate(series_list)]
     return pd.DataFrame(series_dicts).set_index('series_i')
 
 
 def _series_to_long_format_df(series_list: List[Sequence[Any]]) -> pd.DataFrame:
     """Convert a list of series to a long format DataFrame."""
-
     series_dicts = [{'series_i': i, 'element_i': j, 'element': e} for i, s in enumerate(series_list) for j, e in enumerate(s)]
     return pd.DataFrame(series_dicts).set_index(['series_i', 'element_i'])
 
@@ -233,9 +225,9 @@ def _series_to_long_format_df(series_list: List[Sequence[Any]]) -> pd.DataFrame:
 def generate_gellermann_series_table(n: int, m: int, long_format: bool = False, **kwargs: Any) -> pd.DataFrame:
     """Generate a Pandas DataFrame of m random Gellermann series of length n.
 
-    In the wide format, the DataFrame has columns 'series_i', 'element_0', 'element_1', ..., 'element_{n-1}',
-    and each row contains a full series. In the long format, the DataFrame has columns 'series_i',
-    'element_i', 'element', and each row contains a single element of a series.
+    In the wide format, the DataFrame has columns  series_i', 'element_0', 'element_1', ...,
+    'element_{n-1}', and each row contains a full series. In the long format, the DataFrame has
+    columns 'series_i', 'element_i', 'element', and each row contains a single element of a series.
 
     Parameters
     ----------
@@ -253,7 +245,6 @@ def generate_gellermann_series_table(n: int, m: int, long_format: bool = False, 
     pd.DataFrame
         A Pandas DataFrame of m random Gellermann series of length n.
     """
-
     assert n % 2 == 0
     assert m > 0
 

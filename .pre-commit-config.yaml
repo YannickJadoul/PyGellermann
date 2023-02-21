@@ -32,16 +32,16 @@ repos:
     hooks:
     - id: pyupgrade
 
+  - repo: https://github.com/PyCQA/flake8
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+        additional_dependencies: [flake8-pyproject]
+
   - repo: https://github.com/pycqa/isort
     rev: 5.12.0
     hooks:
       - id: isort
-
-  - repo: https://github.com/mgedmin/check-manifest
-    rev: '0.49'
-    hooks:
-    - id: check-manifest
-      stages: [manual]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.0.1
@@ -50,6 +50,12 @@ repos:
       exclude: ^(tests/|scripts/)
       additional_dependencies: ['numpy', 'pandas', 'pandas-stubs', 'qtpy', 'PyQt6', 'pyqtdarktheme']
       args: []
+
+  - repo: https://github.com/mgedmin/check-manifest
+    rev: '0.49'
+    hooks:
+    - id: check-manifest
+      stages: [manual]
 
 ci:
   skip: [mypy]
