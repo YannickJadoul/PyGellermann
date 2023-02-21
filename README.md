@@ -11,6 +11,8 @@ For details on how to use `pip`, see the [Python Packaging User Guide](https://p
 
 Alternatively, you can download the GUI as a standalone executable for Linux, macOS, and Windows from the [releases page](https://github.com/YannickJadoul/PyGellermann/releases).
 
+**Note**: On macOS, opening the PyGellermann app bundle might at first be blocked because it is not signed or distributed through the App Store. To override this and open the app, right-click on the app bundle and select *Open* from the context menu. This will open a dialog asking you to confirm that you want to open the app. After that, you can open the app by double-clicking on it. For more details, see [the macOS User Guide](https://support.apple.com/guide/mac-help/open-a-mac-app-from-an-unidentified-developer-mh40616/mac).
+
 ## Usage
 ### Graphical User Interface
 After installation, you can run the GUI by typing `pygellermann-gui` in your terminal or by running the standalone executable (`PyGellermann`, `PyGellermann.app`, or `PyGellermann.exe`). The following window should appear:
