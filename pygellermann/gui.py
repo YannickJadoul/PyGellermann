@@ -16,11 +16,11 @@
 # along with PyGellermann.  If not, see <https://www.gnu.org/licenses/>.
 
 
+from qtpy import QtCore, QtGui, QtWidgets
+
 from . import gellermann
 
 import pandas as pd
-
-from qtpy import QtCore, QtGui, QtWidgets
 import qdarktheme
 
 import sys
@@ -32,7 +32,7 @@ class ShorterLineEdit(QtWidgets.QLineEdit):
 
 
 class MainWindow(QtWidgets.QMainWindow):
-    
+
     def __init__(self):
         super().__init__()
 
@@ -112,12 +112,12 @@ class MainWindow(QtWidgets.QMainWindow):
         widget = QtWidgets.QWidget()
         widget.setLayout(main_layout)
         self.setCentralWidget(widget)
-    
+
 
     def closeEvent(self, event):
         if not self._check_unsaved_changes():
             event.ignore()
-    
+
 
     def _check_unsaved_changes(self):
         if not self._series or self._was_saved:
@@ -160,7 +160,7 @@ class MainWindow(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.critical(self, "Error", f"An unexpected error occurred: {e}")
             progress_dialog.close()
             return
-        
+
         if progress_dialog.wasCanceled():
             self._series = []
             self._results_table.clearContents()
@@ -182,14 +182,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self._results_widget.setVisible(True)
 
         self._was_saved = False
-    
+
 
     def _copy(self):
         row_strings = []
         for row in range(self._results_table.rowCount()):
             row_strings.append("\t".join(self._results_table.item(row, column).text() for column in range(self._results_table.columnCount())))
         QtWidgets.QApplication.clipboard().setText("\n".join(row_strings))
-    
+
 
     def _clear(self):
         if not self._check_unsaved_changes():
@@ -207,16 +207,16 @@ class MainWindow(QtWidgets.QMainWindow):
             "Comma-separated file, long-format (*.csv)"
         ]
         name, selected = QtWidgets.QFileDialog.getSaveFileName(self, "Save generated series to file", "", ";;".join(formats), self._selected_format)
-        
+
         if not name:
             return False
         self._selected_format = selected
-        
+
         if selected == formats[0]:
             df = gellermann._series_to_wide_format_df(self._series)
         else:
             df = gellermann._series_to_long_format_df(self._series)
-        
+
         try:
             df.to_csv(name)
         except Exception as e:

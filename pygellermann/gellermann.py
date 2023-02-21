@@ -22,9 +22,8 @@ import pandas as pd
 import itertools
 import sys
 
-from typing import Any, Iterator, List, Sequence, Tuple, TypeVar
 import numpy.typing as npt
-
+from typing import Any, Iterator, List, Sequence, Tuple, TypeVar
 
 # TODO: uneven length sequences
 # TODO: optimize multiple calculations
@@ -99,7 +98,7 @@ def is_boolean_gellermann_series(s: BoolSequence, alternation_tolerance: float =
 
 def is_gellermann_series(s: Sequence[Any], alternation_tolerance: float = DEFAULT_ALTERNATION_TOLERANCE) -> bool:
     """Check if a binary sequence is a Gellermann series.
-    
+
     Parameters
     ----------
     s
@@ -112,7 +111,7 @@ def is_gellermann_series(s: Sequence[Any], alternation_tolerance: float = DEFAUL
     -------
     bool
         True if the given sequence is a Gellermann series, False otherwise.
-    
+
     Raises
     ------
     ValueError
@@ -175,7 +174,7 @@ def generate_gellermann_series(n: int, m: int, choices: Tuple[Any, Any] = ('A', 
         generator).
     kwargs
         Additional keyword arguments passed to `is_gellermann_series`.
-    
+
     Yields
     ------
     Iterator[Sequence[Any]]

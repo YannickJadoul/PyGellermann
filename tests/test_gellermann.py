@@ -16,11 +16,11 @@
 # along with PyGellermann.  If not, see <https://www.gnu.org/licenses/>.
 
 
+import pytest
+
 import pygellermann
 
 import numpy as np
-
-import pytest
 
 
 def test_is_gellermann_series():

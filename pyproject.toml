@@ -35,5 +35,13 @@ write_to = "pygellermann/_version.py"
 [tool.check-manifest]
 ignore = ["pygellermann/_version.py"]
 
+[tool.isort]
+multi_line_output = 3
+sections = ["FUTURE", "PYTEST", "QT", "LOCALFOLDER", "FIRSTPARTY", "THIRDPARTY", "STDLIB", "TYPING"]
+known_first_party = ["pygellermann"]
+known_pytest = ["pytest"]
+known_qt = ["qtpy"]
+known_typing = ["typing", "numpy.typing"]
+
 [tool.mypy]
 plugins = "numpy.typing.mypy_plugin"
