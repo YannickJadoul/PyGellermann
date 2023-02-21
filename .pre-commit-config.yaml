@@ -50,3 +50,6 @@ repos:
       exclude: ^(tests/|scripts/)
       additional_dependencies: ['numpy', 'pandas', 'pandas-stubs', 'qtpy', 'PyQt6', 'pyqtdarktheme']
       args: []
+
+ci:
+  skip: [mypy]
