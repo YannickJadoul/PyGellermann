@@ -21,7 +21,7 @@ from qtpy import QtCore, QtGui, QtWidgets
 from . import gellermann
 
 import pandas as pd
-import qdarktheme
+import qdarktheme  # type: ignore
 
 import sys
 
@@ -63,7 +63,7 @@ class MainWindow(QtWidgets.QMainWindow):
         generate_button.clicked.connect(self._generate)
 
         self._results_table = QtWidgets.QTableWidget()
-        self._results_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self._results_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
         self._results_table.horizontalHeader().setVisible(False)
         self._results_table.setMinimumHeight(200)
 
@@ -74,11 +74,11 @@ class MainWindow(QtWidgets.QMainWindow):
         clear_button.clicked.connect(self._clear)
         copy_button = QtWidgets.QPushButton("&Copy")
         copy_button.clicked.connect(self._copy)
-        copy_button.setShortcut(QtGui.QKeySequence.Copy)
+        copy_button.setShortcut(QtGui.QKeySequence.StandardKey.Copy)
         save_button = QtWidgets.QPushButton("&Save...")
         save_button.clicked.connect(self._save)
-        save_button.setShortcut(QtGui.QKeySequence.Save)
-        self._selected_format = None
+        save_button.setShortcut(QtGui.QKeySequence.StandardKey.Save)
+        self._selected_format = ""
 
         input_layout = QtWidgets.QFormLayout()
         input_layout.addRow("Sequence &length:", self._sequence_length_spinbox)
@@ -123,10 +123,10 @@ class MainWindow(QtWidgets.QMainWindow):
         if not self._series or self._was_saved:
             return True
 
-        reply = QtWidgets.QMessageBox.question(self, "Unsaved changes", "These generated Gellermann series have not been saved yet. Do you want to save them?", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No | QtWidgets.QMessageBox.Cancel)
-        if reply == QtWidgets.QMessageBox.Yes:
+        reply = QtWidgets.QMessageBox.question(self, "Unsaved changes", "These generated Gellermann series have not been saved yet. Do you want to save them?", QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No | QtWidgets.QMessageBox.StandardButton.Cancel)
+        if reply == QtWidgets.QMessageBox.StandardButton.Yes:
             return self._save()
-        elif reply == QtWidgets.QMessageBox.No:
+        elif reply == QtWidgets.QMessageBox.StandardButton.No:
             return True
         else:
             return False
@@ -172,7 +172,7 @@ class MainWindow(QtWidgets.QMainWindow):
         for i, row in enumerate(self._series):
             for j, element in enumerate(row):
                 item = QtWidgets.QTableWidgetItem(element)
-                item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
+                item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)  # type: ignore
                 self._results_table.setItem(i, j, item)
         self._results_table.setHorizontalHeaderLabels([""] * self._results_table.columnCount())
         min_width = (max(self._results_table.sizeHintForColumn(i) for i in range(self._results_table.columnCount())))
@@ -238,7 +238,7 @@ def main():
     qdarktheme.setup_theme('auto')
     main_window = MainWindow()
     main_window.show()
-    app.exec_()
+    sys.exit(app.exec_())  # type: ignore
 
 
 if __name__ == '__main__':

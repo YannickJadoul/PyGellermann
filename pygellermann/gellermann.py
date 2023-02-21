@@ -23,7 +23,7 @@ import itertools
 import sys
 
 import numpy.typing as npt
-from typing import Any, Iterator, List, Sequence, Tuple, TypeVar
+from typing import Any, Iterator, List, Optional, Sequence, Tuple
 
 # TODO: uneven length sequences
 # TODO: optimize multiple calculations
@@ -33,8 +33,7 @@ DEFAULT_ALTERNATION_TOLERANCE = 0.1
 
 
 if sys.version_info >= (3, 9):
-    N = TypeVar('N')
-    BoolSequence = np.ndarray[N, np.dtype[np.bool_]]
+    BoolSequence = np.ndarray[int, np.dtype[np.bool_]]
 else:
     BoolSequence = npt.NDArray[np.bool_]
 
@@ -64,7 +63,7 @@ def at_least_twenty_percent_per_half(s: BoolSequence) -> bool:
 def less_than_half_reversals(s: BoolSequence) -> bool:
     """Check if a boolean sequence has less than half True-False or False-True reversals."""
 
-    return np.sum(s[:-1] != s[1:]) <= len(s) // 2
+    return int(np.sum(s[:-1] != s[1:])) <= len(s) // 2
 
 
 def close_to_fifty_percent_alternation(s: BoolSequence, tolerance: float) -> bool:
@@ -75,8 +74,8 @@ def close_to_fifty_percent_alternation(s: BoolSequence, tolerance: float) -> boo
 
     n = len(s)
 
-    def close_to_fifty_percent_for(alternation):
-        return 0.5 - tolerance <= np.sum(alternation == s) / n <= 0.5 + tolerance
+    def close_to_fifty_percent_for(alternation: BoolSequence) -> bool:
+        return 0.5 - tolerance <= int(np.sum(alternation == s)) / n <= 0.5 + tolerance
 
     return (close_to_fifty_percent_for(np.tile([True, False], (n + 1) // 2)[:n]) and
             close_to_fifty_percent_for(np.tile([True, True, False, False], (n + 3) // 4)[:n]) and
@@ -142,7 +141,7 @@ def is_gellermann_series(s: Sequence[Any], alternation_tolerance: float = DEFAUL
     return is_boolean_gellermann_series(np.array([x == s[0] for x in s]), alternation_tolerance=alternation_tolerance)
 
 
-def generate_boolean_gellermann_series(n: int, m: int, rng: np.random.Generator = None, **kwargs) -> Iterator[BoolSequence]:
+def generate_boolean_gellermann_series(n: int, m: int, rng: Optional[np.random.Generator] = None, **kwargs: Any) -> Iterator[BoolSequence]:
     """Generate m random boolean Gellermann series of length n."""
 
     assert n % 2 == 0
@@ -158,7 +157,7 @@ def generate_boolean_gellermann_series(n: int, m: int, rng: np.random.Generator 
             m -= 1
 
 
-def generate_gellermann_series(n: int, m: int, choices: Tuple[Any, Any] = ('A', 'B'), rng: np.random.Generator = None, **kwargs) -> Iterator[Sequence[Any]]:
+def generate_gellermann_series(n: int, m: int, choices: Tuple[Any, Any] = ('A', 'B'), rng: Optional[np.random.Generator] = None, **kwargs: Any) -> Iterator[Sequence[Any]]:
     """Generate m random Gellermann series of length n.
 
     Parameters
@@ -185,7 +184,7 @@ def generate_gellermann_series(n: int, m: int, choices: Tuple[Any, Any] = ('A', 
         yield [choices[int(x)] for x in s]
 
 
-def generate_all_boolean_gellermann_series(n, **kwargs) -> Iterator[BoolSequence]:
+def generate_all_boolean_gellermann_series(n: int, **kwargs: Any) -> Iterator[BoolSequence]:
     """Generate all boolean Gellermann series of length n."""
 
     assert n % 2 == 0
@@ -195,7 +194,7 @@ def generate_all_boolean_gellermann_series(n, **kwargs) -> Iterator[BoolSequence
             yield np.array(s)
 
 
-def generate_all_gellermann_series(n: int, choices: Tuple[Any, Any] = ('A', 'B'), **kwargs) -> Iterator[Sequence[Any]]:
+def generate_all_gellermann_series(n: int, choices: Tuple[Any, Any] = ('A', 'B'), **kwargs: Any) -> Iterator[Sequence[Any]]:
     """Generate all Gellermann series of length n in lexicographic order.
 
     Parameters
@@ -231,7 +230,7 @@ def _series_to_long_format_df(series_list: List[Sequence[Any]]) -> pd.DataFrame:
     return pd.DataFrame(series_dicts).set_index(['series_i', 'element_i'])
 
 
-def generate_gellermann_series_table(n: int, m: int, long_format: bool = False, **kwargs):
+def generate_gellermann_series_table(n: int, m: int, long_format: bool = False, **kwargs: Any) -> pd.DataFrame:
     """Generate a Pandas DataFrame of m random Gellermann series of length n.
 
     In the wide format, the DataFrame has columns 'series_i', 'element_0', 'element_1', ..., 'element_{n-1}',

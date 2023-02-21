@@ -44,4 +44,15 @@ known_qt = ["qtpy"]
 known_typing = ["typing", "numpy.typing"]
 
 [tool.mypy]
+packages = ["pygellermann"]
 plugins = "numpy.typing.mypy_plugin"
+strict = true
+always_true = "PYQT6"
+always_false = ["PYQT5", "PYSIDE2", "PYSIDE6"]
+
+[[tool.mypy.overrides]]
+module = "pygellermann.gui"
+strict = false
+disallow_untyped_calls = false
+disallow_untyped_defs = false
+check_untyped_defs = true
