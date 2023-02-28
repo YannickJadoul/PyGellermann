@@ -22,6 +22,7 @@ from qtpy import QtCore, QtGui, QtWidgets
 
 from . import gellermann
 
+import numpy as np
 import qdarktheme  # type: ignore
 
 import sys
@@ -146,16 +147,28 @@ class MainWindow(QtWidgets.QMainWindow):
             return
 
         progress_dialog = QtWidgets.QProgressDialog("Generating series...", "Cancel", 0, m, self)
+        progress_dialog.setWindowTitle("PyGellermann")
         progress_dialog.setMinimumDuration(500)
         progress_dialog.setModal(True)
 
+        self._results_table.clearContents()
+        self._results_table.setRowCount(0)
+
         self._series = []
         try:
-            for s in gellermann.generate_gellermann_series(n, m, alternation_tolerance=alternation_tolerance, choices=choices):
-                self._series.append(s)
-                progress_dialog.setValue(len(self._series))
+            rng = np.random.default_rng()  # TODO: Allow user to specify seed
+            while len(self._series) < m:
+                s = next(gellermann.generate_gellermann_series(n, 1, alternation_tolerance=alternation_tolerance,
+                                                               choices=choices, rng=rng, max_iterations=1000), None)
+
                 if progress_dialog.wasCanceled():
                     break
+
+                if s is not None:
+                    self._series.append(s)
+
+                progress_dialog.setValue(len(self._series))
+                QtWidgets.QApplication.processEvents()
         except Exception as e:
             QtWidgets.QMessageBox.critical(self, "Error", f"An unexpected error occurred: {e}")
             progress_dialog.close()
@@ -163,8 +176,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
         if progress_dialog.wasCanceled():
             self._series = []
-            self._results_table.clearContents()
             self._results_widget.setVisible(False)
+            QtCore.QTimer.singleShot(0, self.adjustSize)
             return
 
         self._results_table.setRowCount(len(self._series))
@@ -180,6 +193,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self._results_table.resizeColumnsToContents()
         self._results_table.resizeRowsToContents()
         self._results_widget.setVisible(True)
+        QtCore.QTimer.singleShot(0, self.adjustSize)
 
         self._was_saved = False
 

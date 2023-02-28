@@ -138,7 +138,8 @@ def is_gellermann_series(s: Sequence[Any], alternation_tolerance: float = DEFAUL
     return is_boolean_gellermann_series(np.array([x == s[0] for x in s]), alternation_tolerance=alternation_tolerance)
 
 
-def generate_boolean_gellermann_series(n: int, m: int, rng: Optional[np.random.Generator] = None, **kwargs: Any) -> Iterator[BoolSequence]:
+def generate_boolean_gellermann_series(n: int, m: int, rng: Optional[np.random.Generator] = None,
+                                       max_iterations: Optional[int] = None, **kwargs: Any) -> Iterator[BoolSequence]:
     """Generate m random boolean Gellermann series of length n."""
     assert n % 2 == 0
     assert m > 0
@@ -146,15 +147,19 @@ def generate_boolean_gellermann_series(n: int, m: int, rng: Optional[np.random.G
     if rng is None:
         rng = np.random.default_rng()
     s = np.repeat([True, False], n // 2)
-    while m > 0:
+
+    for _ in itertools.islice(itertools.count(), max_iterations):
         rng.shuffle(s)
         if is_boolean_gellermann_series(s, **kwargs):
             yield s.copy()
             m -= 1
 
+        if m == 0:
+            break
+
 
 def generate_gellermann_series(n: int, m: int, choices: Tuple[Any, Any] = ('A', 'B'), rng: Optional[np.random.Generator] = None,
-                               **kwargs: Any) -> Iterator[Sequence[Any]]:
+                               max_iterations: Optional[int] = None, **kwargs: Any) -> Iterator[Sequence[Any]]:
     """Generate m random Gellermann series of length n.
 
     Parameters
@@ -168,6 +173,9 @@ def generate_gellermann_series(n: int, m: int, choices: Tuple[Any, Any] = ('A', 
     rng
         A NumPy random number generator (default: None, which uses the default NumPy random number
         generator).
+    max_iterations
+        The maximum number of iterations to try to generate all Gellermann series (default: None,
+        which tries indefinitely).
     kwargs
         Additional keyword arguments passed to `is_gellermann_series`.
 
@@ -176,7 +184,7 @@ def generate_gellermann_series(n: int, m: int, choices: Tuple[Any, Any] = ('A', 
     Iterator[Sequence[Any]]
         A generator object with m Gellermann series of length n.
     """
-    for s in generate_boolean_gellermann_series(n, m, rng=rng, **kwargs):
+    for s in generate_boolean_gellermann_series(n, m, rng=rng, max_iterations=max_iterations, **kwargs):
         yield [choices[int(x)] for x in s]
 
 

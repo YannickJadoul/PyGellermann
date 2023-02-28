@@ -84,7 +84,11 @@ The Python API consists of 4 simple functions:
 
   - `rng` : `np.random.Generator`, optional
 
-    A NumPy random number generator (default: None, which uses the default NumPy random number generator).
+    A NumPy random number generator (default: `None`, which uses the default NumPy random number generator).
+
+  - `max_iterations` : `int`, optional
+
+    The maximum number of iterations to try to generate all Gellermann series (default: `None`, which tries indefinitely).
 
   - `kwargs`
 

@@ -56,6 +56,11 @@ def test_generate_gellermann_series_rng():
     ]
 
 
+def test_generate_gellermann_series_max_iterations():
+    series = list(pygellermann.generate_gellermann_series(8, 5, max_iterations=1000))
+    assert len(series) == 0
+
+
 @pytest.mark.parametrize('n, m_expected', [(10, 8), (16, 80), (20, 4726)])
 def test_generate_all_gellermann_series(n, m_expected):
     all_series = list(pygellermann.generate_all_gellermann_series(n))
