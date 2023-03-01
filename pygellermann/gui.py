@@ -33,7 +33,7 @@ class ShorterLineEdit(QtWidgets.QLineEdit):
         return QtCore.QSize(20, super().sizeHint().height())
 
 
-class MainWindow(QtWidgets.QMainWindow):
+class MainWindow(QtWidgets.QWidget):
 
     def __init__(self):
         super().__init__()
@@ -118,9 +118,7 @@ class MainWindow(QtWidgets.QMainWindow):
         main_layout.addLayout(centered_input_layout)
         main_layout.addWidget(self._results_widget)
 
-        widget = QtWidgets.QWidget()
-        widget.setLayout(main_layout)
-        self.setCentralWidget(widget)
+        self.setLayout(main_layout)
 
     def closeEvent(self, event):
         if not self._check_unsaved_changes():
@@ -190,8 +188,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         if progress_dialog.wasCanceled():
             self._series = []
-            self._results_widget.setVisible(False)
-            QtCore.QTimer.singleShot(0, self.adjustSize)
+            self._collapse_results()
             return
 
         self._results_table.setRowCount(len(self._series))
@@ -206,8 +203,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self._results_table.horizontalHeader().setMinimumSectionSize(min_width)
         self._results_table.resizeColumnsToContents()
         self._results_table.resizeRowsToContents()
-        self._results_widget.setVisible(True)
-        QtCore.QTimer.singleShot(0, self.adjustSize)
+        self._expand_results()
 
         self._was_saved = False
 
@@ -223,8 +219,18 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self._series = []
         self._results_table.clearContents()
+        self._results_table.setRowCount(0)
+        self._collapse_results()
+
+    def _collapse_results(self):
+        self.installEventFilter(self)
         self._results_widget.setVisible(False)
-        QtCore.QTimer.singleShot(0, self.adjustSize)
+        self.setMinimumHeight(self.sizeHint().height())
+        QtCore.QTimer.singleShot(20, self.adjustSize)
+
+    def _expand_results(self):
+        self._results_widget.setVisible(True)
+        self.setMinimumHeight(self.sizeHint().height())
 
     def _save(self):
         formats = [
