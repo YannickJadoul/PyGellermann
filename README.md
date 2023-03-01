@@ -24,6 +24,7 @@ Four parameters can be set to customize the generated Gellermann series:
 - *Number of sequences*: The number of sequences to generate.
 - *Alternation tolerance*: How close to 50% chance level a sequence needs to be when compared to single or double alternation.
 - *Choices*: The two possible choices for each stimulus in the sequences.
+- *Random seed*: The seed for the random number generator, allowing to deterministically generate the same sequences.
 
 The *Generate* button will then generate the requested number of sequences, and display them in the table underneath.
 

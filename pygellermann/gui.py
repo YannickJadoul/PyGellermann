@@ -61,6 +61,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self._option2_lineedit = ShorterLineEdit()
         self._option2_lineedit.setText("B")
 
+        random_seed_validator = QtGui.QIntValidator()
+        random_seed_validator.setBottom(0)
+        self._random_seed_lineedit = ShorterLineEdit()
+        self._random_seed_lineedit.setValidator(random_seed_validator)
+        self._random_seed_lineedit.setPlaceholderText("None")
+
         generate_button = QtWidgets.QPushButton("Generate")
         generate_button.clicked.connect(self._generate)
 
@@ -88,6 +94,7 @@ class MainWindow(QtWidgets.QMainWindow):
         input_layout.addRow("&Alternation tolerance:", self._alternation_tolerance_spinbox)
         input_layout.addRow("Choices:", self._option1_lineedit)
         input_layout.addRow("", self._option2_lineedit)
+        input_layout.addRow("Random seed:", self._random_seed_lineedit)
         input_layout.addRow(generate_button)
 
         centered_input_layout = QtWidgets.QHBoxLayout()
@@ -146,6 +153,14 @@ class MainWindow(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.critical(self, "Error", "PyGellermann cannot yet generate odd length Gellermann series.")
             return
 
+        try:
+            random_seed_text = self._random_seed_lineedit.text()
+            random_seed = int(random_seed_text) if random_seed_text else None
+        except ValueError:
+            QtWidgets.QMessageBox.critical(self, "Error", "Invalid random seed.")
+            return
+        rng = np.random.default_rng(random_seed)
+
         progress_dialog = QtWidgets.QProgressDialog("Generating series...", "Cancel", 0, m, self)
         progress_dialog.setWindowTitle("PyGellermann")
         progress_dialog.setMinimumDuration(500)
@@ -156,7 +171,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self._series = []
         try:
-            rng = np.random.default_rng()  # TODO: Allow user to specify seed
             while len(self._series) < m:
                 s = next(gellermann.generate_gellermann_series(n, 1, alternation_tolerance=alternation_tolerance,
                                                                choices=choices, rng=rng, max_iterations=1000), None)
@@ -171,8 +185,8 @@ class MainWindow(QtWidgets.QMainWindow):
                 QtWidgets.QApplication.processEvents()
         except Exception as e:
             QtWidgets.QMessageBox.critical(self, "Error", f"An unexpected error occurred: {e}")
+            progress_dialog.cancel()
             progress_dialog.close()
-            return
 
         if progress_dialog.wasCanceled():
             self._series = []
