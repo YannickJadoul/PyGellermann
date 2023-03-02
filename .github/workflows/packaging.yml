@@ -104,6 +104,9 @@ jobs:
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     needs: [build, pyinstaller]
 
+    permissions:
+      contents: write
+
     steps:
       - name: Collect wheel and sdist
         uses: actions/download-artifact@v3
