@@ -20,7 +20,7 @@
 
 from qtpy import QtCore, QtGui, QtWidgets
 
-from . import gellermann
+from . import __version__, gellermann
 
 import numpy as np
 import qdarktheme  # type: ignore
@@ -41,7 +41,7 @@ class MainWindow(QtWidgets.QWidget):
         self._series = []
         self._was_saved = False
 
-        self.setWindowTitle("PyGellermann")
+        self.setWindowTitle(f"PyGellermann {__version__}")
         self.setMinimumWidth(500)
 
         self._sequence_length_spinbox = QtWidgets.QSpinBox()
