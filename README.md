@@ -1,7 +1,6 @@
 [![PyPI version](https://img.shields.io/pypi/v/pygellermann.svg)](https://pypi.python.org/pypi/pygellermann)
 [![PyPI Python versions](https://img.shields.io/pypi/pyversions/pygellermann.svg)](https://pypi.python.org/pypi/pygellermann)
-[![GitHub Actions status](https://github.com/YannickJadoul/PyGellermann/actions/workflows/ci.yml/badge.svg)](https://github.com/YannickJadoul/
-PyGellermann/actions/workflows/ci.yml)
+[![GitHub Actions status](https://github.com/YannickJadoul/PyGellermann/actions/workflows/ci.yml/badge.svg)](https://github.com/YannickJadoul/PyGellermann/actions/workflows/ci.yml)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/YannickJadoul/PyGellermann/main.svg)](https://results.pre-commit.ci/latest/github/YannickJadoul/PyGellermann/main)
 
 # PyGellerman: A Python Gellermann series generator
