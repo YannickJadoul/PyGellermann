@@ -8,6 +8,14 @@ PyGellermann/actions/workflows/ci.yml)
 
 This is a Python implementation of a random genenerator for Gellermann series, pseudorandom binary sequences for human and non-human animal behavioural experiments[^Gellermann1933]. It includes both a graphical user interface (GUI) as well as a simple Python API.
 
+Gellermann series aim to avoid inflating a partipant's experimental performance by excluding random sequences that would match simple psychological or behavioural patterns. More specifically, a Gellermann series is a random sequence which satisfies five criteria; each series of length $n$:
+- must contain an equal number (= $n/2$) of As and Bs;
+- must contain at most 3 As or Bs in a row;
+- must contain at least 20% (= $n/5$) As and Bs within both the first and last
+half;
+- must contain at most $n/2$ reversals (A-B or B-A transitions);
+- must provide a correct response rate close to 50% chance when responses are provided as simple alternation (ABAB...) or double alternation (AABBAA... and ABBAAB...).
+
 ## Installation
 PyGellermann is available on PyPI and can be installed using pip:
 
