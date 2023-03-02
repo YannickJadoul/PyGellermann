@@ -63,17 +63,22 @@ jobs:
           python-version: '3.10'
 
       - name: Install package
+        shell: bash
         run: |
           python -m pip install --upgrade pip
           pip install .
+          echo "PYGELLERMANN_VERSION=$(python -c 'import pygellermann; print(pygellermann.__version__)')" >> $GITHUB_ENV
 
       - name: Install PyInstaller
         run: |
           pip install pyinstaller
 
       - name: Run PyInstaller
+        shell: bash
         run: |
           pyinstaller --name PyGellermann --windowed --onefile scripts/pygellermann-gui.py
+          EXT="${{runner.os == 'Windows' && '.exe' || '' }}"
+          mv dist/PyGellermann$EXT dist/PyGellermann-$PYGELLERMANN_VERSION-${{ runner.os }}$EXT
 
       - name: Package macOS App Bundle to DMG
         if: runner.os == 'macOS'
@@ -90,12 +95,14 @@ jobs:
             --app-drop-link 500 120 \
             "dist/PyGellermann.dmg" \
             "dist/PyGellermann.app/"
+          rm -r dist/PyGellermann.app
+          mv dist/PyGellermann.dmg dist/PyGellermann-$PYGELLERMANN_VERSION-${{ runner.os }}.dmg
 
       - name: Upload built executable
         uses: actions/upload-artifact@v3
         with:
           name: executables
-          path: dist/PyGellermann${{ runner.os == 'macOS' && '.dmg' || runner.os == 'Windows' && '.exe' || '' }}
+          path: dist/PyGellermann-*
           if-no-files-found: error
 
   create_release:
