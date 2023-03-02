@@ -120,6 +120,8 @@ class MainWindow(QtWidgets.QWidget):
 
         self.setLayout(main_layout)
 
+        self._collapse_results()
+
     def closeEvent(self, event):
         if not self._check_unsaved_changes():
             event.ignore()
