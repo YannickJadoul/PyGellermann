@@ -15,6 +15,10 @@ half;
 - must contain at most $n/2$ reversals (A-B or B-A transitions);
 - must provide a correct response rate close to 50% chance when responses are provided as simple alternation (ABAB...) or double alternation (AABBAA... and ABBAAB...).
 
+A full, open access manuscript introducing PyGellermann and describing its scientific applications and limitations has been published in BMC Research Notes, and is available [here](https://bmcresnotes.biomedcentral.com/articles/10.1186/s13104-023-06396-x). It can be cited as follows:
+
+> Jadoul, Y., Duengen, D., & Ravignani, A. (2023). PyGellermann: a Python tool to generate pseudorandom series for human and non-human animal behavioural experiments. *BMC Research Notes, 16*(1), 135. https://doi.org/10.1186/s13104-023-06396-x
+
 ## Installation
 PyGellermann is available on PyPI and can be installed using pip:
 
@@ -170,6 +174,10 @@ The Python API consists of 4 simple functions:
 PyGellermann is released under the GNU General Public License v3 or later. See the LICENSE file for details.
 
 PyGellermann was developed at the [Comparative Bioacoustics Group](https://www.mpi.nl/department/comparative-bioacoustics/20) of the [Max Planck Institute for Psycholinguistics](https://www.mpi.nl/), Nijmegen, the Netherlands.
+
+In scientific publications, PyGellermann can be cited as follows:
+
+> Jadoul, Y., Duengen, D., & Ravignani, A. (2023). PyGellermann: a Python tool to generate pseudorandom series for human and non-human animal behavioural experiments. *BMC Research Notes, 16*(1), 135. https://doi.org/10.1186/s13104-023-06396-x
 
 ## References
 
