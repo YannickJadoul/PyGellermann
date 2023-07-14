@@ -11,5 +11,5 @@ _Nothing yet_
 - Initial Python API, with `is_gellermann_series`, `generate_gellermann_series`, `generate_all_gellermann_series`, and `generate_gellermann_series_table`
 - Basic GUI, with PyInstaller-generated standalone executables for Linux, macOS, and Windows
 
-[0.1.0]: https://github.com/YannickJadoul/PyGellermann/compare/v0.1.0...HEAD
-[Unreleased]: https://github.com/YannickJadoul/PyGellermann/compare/e013a30...v0.1.0
+[Unreleased]: https://github.com/YannickJadoul/PyGellermann/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/YannickJadoul/PyGellermann/compare/e013a30...v0.1.0
