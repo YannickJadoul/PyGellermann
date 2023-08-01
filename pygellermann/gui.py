@@ -72,7 +72,9 @@ class MainWindow(QtWidgets.QWidget):
 
         self._results_table = QtWidgets.QTableWidget()
         self._results_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
-        self._results_table.horizontalHeader().setVisible(False)
+        horizontal_header = self._results_table.horizontalHeader()
+        assert horizontal_header is not None
+        horizontal_header.setVisible(False)
         self._results_table.setMinimumHeight(200)
 
         self._results_widget = QtWidgets.QWidget()
@@ -201,8 +203,10 @@ class MainWindow(QtWidgets.QWidget):
                 item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)  # type: ignore
                 self._results_table.setItem(i, j, item)
         self._results_table.setHorizontalHeaderLabels([""] * self._results_table.columnCount())
+        horizontal_header = self._results_table.horizontalHeader()
+        assert horizontal_header is not None
         min_width = (max(self._results_table.sizeHintForColumn(i) for i in range(self._results_table.columnCount())))
-        self._results_table.horizontalHeader().setMinimumSectionSize(min_width)
+        horizontal_header.setMinimumSectionSize(min_width)
         self._results_table.resizeColumnsToContents()
         self._results_table.resizeRowsToContents()
         self._expand_results()
@@ -210,10 +214,14 @@ class MainWindow(QtWidgets.QWidget):
         self._was_saved = False
 
     def _copy(self):
+        clipboard = QtWidgets.QApplication.clipboard()
+        if clipboard is None:
+            raise RuntimeError("Could not access clipboard to copy table!")
+
         row_strings = []
         for row in range(self._results_table.rowCount()):
-            row_strings.append("\t".join(self._results_table.item(row, column).text() for column in range(self._results_table.columnCount())))
-        QtWidgets.QApplication.clipboard().setText("\n".join(row_strings))
+            row_strings.append("\t".join(self._results_table.item(row, column).text() for column in range(self._results_table.columnCount())))  # type: ignore
+        clipboard.setText("\n".join(row_strings))
 
     def _clear(self):
         if not self._check_unsaved_changes():
