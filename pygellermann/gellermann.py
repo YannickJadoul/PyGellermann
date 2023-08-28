@@ -162,6 +162,11 @@ def generate_gellermann_series(n: int, m: int, choices: Tuple[Any, Any] = ('A', 
                                max_iterations: Optional[int] = None, **kwargs: Any) -> Iterator[Sequence[Any]]:
     """Generate m random Gellermann series of length n.
 
+    Note that this function returns a generator object. To turn it into a list of series, use
+    `list(generate_gellermann_series(...))`.
+
+    To generate a single Gellermann series, use `next(generate_gellermann_series(n, 1))`.
+
     Parameters
     ----------
     n

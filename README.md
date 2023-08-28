@@ -87,6 +87,10 @@ The Python API consists of 4 simple functions:
 
   Generate m random Gellermann series of length n.
 
+  Note that this function returns a generator object. To turn it into a list of series, use `list(generate_gellermann_series(...))`.
+
+  To generate a single Gellermann series, use `next(generate_gellermann_series(n, 1))`.
+
   #### Parameters
   - `n` : `int`
 
