@@ -10,7 +10,7 @@ authors = [
     {name = "Yannick Jadoul", email = "Yannick.Jadoul@mpi.nl"}
 ]
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
