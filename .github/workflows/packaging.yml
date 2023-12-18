@@ -39,7 +39,7 @@ jobs:
           python -m build
 
       - name: Upload built packages
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: packages
           path: dist/*
@@ -99,7 +99,7 @@ jobs:
           mv dist/PyGellermann.dmg dist/PyGellermann-$PYGELLERMANN_VERSION-${{ runner.os }}.dmg
 
       - name: Upload built executable
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: executables
           path: dist/PyGellermann-*
