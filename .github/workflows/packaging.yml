@@ -101,7 +101,7 @@ jobs:
       - name: Upload built executable
         uses: actions/upload-artifact@v4
         with:
-          name: executables
+          name: executable-${{ runner.os }}
           path: dist/PyGellermann-*
           if-no-files-found: error
 
@@ -115,17 +115,16 @@ jobs:
       contents: write
 
     steps:
-      - name: Collect wheel and sdist
+      - name: Collect all artifacts
         uses: actions/download-artifact@v4
         with:
-          name: packages
-          path: dist
+          path: artifacts
 
-      - name: Collect executables
-        uses: actions/download-artifact@v4
-        with:
-          name: executables
-          path: dist
+      - name: Copy wheel, sdist, and executables to dist
+        run: |
+          mkdir dist
+          cp artifacts/packages/* dist/
+          cp artifacts/executable-*/* dist/
 
       - name: Upload wheel, sdist, and executables to release
         uses: ncipollo/release-action@v1
