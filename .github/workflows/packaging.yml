@@ -115,16 +115,11 @@ jobs:
       contents: write
 
     steps:
-      - name: Collect all artifacts
+      - name: Collect wheel, sdist, and executables
         uses: actions/download-artifact@v4
         with:
-          path: artifacts
-
-      - name: Copy wheel, sdist, and executables to dist
-        run: |
-          mkdir dist
-          cp artifacts/packages/* dist/
-          cp artifacts/executable-*/* dist/
+          path: dist
+          merge-multiple: true
 
       - name: Upload wheel, sdist, and executables to release
         uses: ncipollo/release-action@v1
