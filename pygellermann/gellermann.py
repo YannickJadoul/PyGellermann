@@ -21,7 +21,6 @@ import numpy as np
 import pandas as pd
 
 import itertools
-import sys
 
 import numpy.typing as npt
 from typing import Any, Iterator, List, Optional, Sequence, Tuple
@@ -33,10 +32,7 @@ from typing import Any, Iterator, List, Optional, Sequence, Tuple
 DEFAULT_ALTERNATION_TOLERANCE = 0.1
 
 
-if sys.version_info >= (3, 9):
-    BoolSequence = np.ndarray[int, np.dtype[np.bool_]]
-else:
-    BoolSequence = npt.NDArray[np.bool_]
+BoolSequence = npt.NDArray[np.bool_]
 
 
 def balanced_elements(s: BoolSequence) -> bool:
