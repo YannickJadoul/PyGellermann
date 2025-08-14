@@ -11,7 +11,7 @@ authors = [
     {name = "Yannick Jadoul", email = "Yannick.Jadoul@mpi.nl"}
 ]
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Operating System :: OS Independent",
