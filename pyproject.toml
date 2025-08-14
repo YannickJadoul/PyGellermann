@@ -5,7 +5,8 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "pygellermann"
 description = "A Python Gellermann series generator"
-license = {text = "GNU General Public License v3 or later (GPLv3+)"}
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
 authors = [
     {name = "Yannick Jadoul", email = "Yannick.Jadoul@mpi.nl"}
 ]
