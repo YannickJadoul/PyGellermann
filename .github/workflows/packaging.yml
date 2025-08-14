@@ -82,7 +82,8 @@ jobs:
       - name: Run PyInstaller
         shell: bash
         run: |
-          pyinstaller --name PyGellermann --windowed --onefile scripts/pygellermann-gui.py
+          MACOS_ARCH="${{runner.os == 'macOS' && '--target-arch universal2' || ''}}"
+          pyinstaller --name PyGellermann --windowed --onefile $MACOS_ARCH scripts/pygellermann-gui.py
           EXT="${{runner.os == 'Windows' && '.exe' || '' }}"
           mv dist/PyGellermann$EXT dist/PyGellermann-$PYGELLERMANN_VERSION-${{ runner.os }}$EXT
 
