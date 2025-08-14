@@ -68,6 +68,26 @@ jobs:
         with:
           python-version: '3.13'
 
+      - name: Make and install universal2 wheels
+        if: runner.os == 'macOS'
+        run: |
+          pip install delocate
+          for package in numpy pandas
+          do
+            pip download $package --platform macosx_10_13_x86_64 --only-binary=:all: -d wheelhouse/
+            pip download $package --platform macosx_11_0_arm64 --only-binary=:all: -d wheelhouse/
+            delocate-merge wheelhouse/$package-*.whl
+            pip install wheelhouse/$package-*_universal2.whl
+            rm -r wheelhouse/
+          done
+
+          package="pyqt6_qt6"
+          pip download $package --platform macosx_10_14_x86_64 --only-binary=:all: -d wheelhouse/
+          pip download $package --platform macosx_11_0_arm64 --only-binary=:all: -d wheelhouse/
+          delocate-merge wheelhouse/$package-*.whl
+          pip install wheelhouse/$package-*_universal2.whl
+          rm -r wheelhouse/
+
       - name: Install package
         shell: bash
         run: |
