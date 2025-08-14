@@ -22,7 +22,7 @@ dependencies = [
     "pandas",
     "qtpy",
     "PyQt6",
-    "pyqtdarktheme",
+    "pyqtdarktheme-fork",
 ]
 dynamic = ["version"]
 
