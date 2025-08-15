@@ -64,27 +64,39 @@ jobs:
           filter: tree:0
 
       - name: Set up Python 3.13
+        if: runner.os != 'Linux'
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
 
+      - name: Start manylinux container
+        if: runner.os == 'Linux'
+        run: |
+          docker run --rm -d -i -v "$GITHUB_WORKSPACE:/host" -w "/host" --name=manylinux quay.io/pypa/manylinux_2_28_x86_64:latest
+          MANYLINUX_PATH=$(docker exec manylinux bash -c 'echo "$PATH"')
+          echo "RUN_PREFIX=eval docker exec --env \"PATH=/opt/python/cp313-cp313/bin:$MANYLINUX_PATH\" manylinux" >> $GITHUB_ENV
+
       - name: Install package
         shell: bash
         run: |
-          python -m pip install --upgrade pip
-          pip install .
-          echo "PYGELLERMANN_VERSION=$(python -c 'import pygellermann; print(pygellermann.__version__)')" >> $GITHUB_ENV
+          $RUN_PREFIX env
+          $RUN_PREFIX which python
+          $RUN_PREFIX python --version
+          $RUN_PREFIX python -m pip install --upgrade pip
+          $RUN_PREFIX pip install .
+          echo "PYGELLERMANN_VERSION=$($RUN_PREFIX python -c 'import pygellermann; print(pygellermann.__version__)')" >> $GITHUB_ENV
 
       - name: Install PyInstaller
+        shell: bash
         run: |
-          pip install pyinstaller
+          $RUN_PREFIX pip install pyinstaller
 
       - name: Run PyInstaller
         shell: bash
         run: |
-          pyinstaller --name PyGellermann --windowed --onefile scripts/pygellermann-gui.py
+          $RUN_PREFIX pyinstaller --name PyGellermann --windowed --onefile scripts/pygellermann-gui.py
           EXT="${{runner.os == 'Windows' && '.exe' || '' }}"
-          mv dist/PyGellermann$EXT dist/PyGellermann-$PYGELLERMANN_VERSION-${{ runner.os }}$EXT
+          $RUN_PREFIX mv dist/PyGellermann$EXT dist/PyGellermann-$PYGELLERMANN_VERSION-${{ runner.os }}$EXT
 
       - name: Package macOS App Bundle to DMG
         if: runner.os == 'macOS'
@@ -110,6 +122,11 @@ jobs:
           name: executable-${{ runner.os }}
           path: dist/PyGellermann-*
           if-no-files-found: error
+
+      - name: Stop manylinux container
+        if: runner.os == 'Linux'
+        run: |
+          docker stop manylinux -t 0
 
   create_release:
     name: Create release
