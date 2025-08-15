@@ -72,7 +72,7 @@ jobs:
       - name: Start manylinux container
         if: runner.os == 'Linux'
         run: |
-          docker run --rm -d -i -v "$GITHUB_WORKSPACE:/host" -w "/host" --name=manylinux quay.io/pypa/manylinux_2_28_x86_64:latest
+          docker run --rm -d -i -v "$GITHUB_WORKSPACE:/host" -w "/host" --name=manylinux ghcr.io/rust-cross/manylinux_2_28-cross:x86_64
           MANYLINUX_PATH=$(docker exec manylinux bash -c 'echo "$PATH"')
           echo "RUN_PREFIX=eval docker exec --env \"PATH=/opt/python/cp313-cp313/bin:$MANYLINUX_PATH\" manylinux" >> $GITHUB_ENV
 
