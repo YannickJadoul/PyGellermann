@@ -97,7 +97,7 @@ jobs:
           create-dmg \
             --volname "PyGellermann" \
             --background "builtin-arrow.tiff" \
-            --window-size 640 280 \
+            --window-size 640 320 \
             --icon-size 128 \
             --icon "PyGellermann.app" 140 120 \
             --hide-extension "PyGellermann.app" \
