@@ -51,7 +51,7 @@ jobs:
   pyinstaller:
     strategy:
       matrix:
-        os: [ubuntu-22.04, macos-latest, windows-latest]
+        os: [ubuntu-22.04, macos-latest, macos-13, windows-latest]
 
     name: PyInstaller • ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -79,16 +79,19 @@ jobs:
         run: |
           pip install pyinstaller
 
-      - name: Run PyInstaller
+      - name: Run PyInstaller on Windows and Linux
+        if: runner.os != 'macOS'
         shell: bash
         run: |
           pyinstaller --name PyGellermann --windowed --onefile scripts/pygellermann-gui.py
-          EXT="${{runner.os == 'Windows' && '.exe' || '' }}"
+          EXT="${{ runner.os == 'Windows' && '.exe' || '' }}"
           mv dist/PyGellermann$EXT dist/PyGellermann-$PYGELLERMANN_VERSION-${{ runner.os }}$EXT
+          echo "ARTIFACT_SUFFIX=" >> $GITHUB_ENV
 
-      - name: Package macOS App Bundle to DMG
+      - name: Run PyInstaller on macOS and package App Bundle to DMG
         if: runner.os == 'macOS'
         run: |
+          pyinstaller --name PyGellermann --windowed --onedir scripts/pygellermann-gui.py
           brew install create-dmg
           curl -O https://raw.githubusercontent.com/dmgbuild/dmgbuild/main/src/dmgbuild/resources/builtin-arrow.tiff
           create-dmg \
@@ -102,12 +105,14 @@ jobs:
             "dist/PyGellermann.dmg" \
             "dist/PyGellermann.app/"
           rm -r dist/PyGellermann.app
-          mv dist/PyGellermann.dmg dist/PyGellermann-$PYGELLERMANN_VERSION-${{ runner.os }}.dmg
+          MACOS_ARCH="${{ matrix.os == 'macos-13' && '-Intel' || '-AppleSilicon' }}"
+          mv dist/PyGellermann.dmg dist/PyGellermann-$PYGELLERMANN_VERSION-${{ runner.os }}$MACOS_ARCH.dmg
+          echo "ARTIFACT_SUFFIX=$MACOS_ARCH" >> $GITHUB_ENV
 
       - name: Upload built executable
         uses: actions/upload-artifact@v4
         with:
-          name: executable-${{ runner.os }}
+          name: executable-${{ runner.os }}${{ env.ARTIFACT_SUFFIX }}
           path: dist/PyGellermann-*
           if-no-files-found: error
 
