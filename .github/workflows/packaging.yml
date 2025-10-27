@@ -42,7 +42,7 @@ jobs:
           python -m build
 
       - name: Upload built packages
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: packages
           path: dist/*
@@ -110,7 +110,7 @@ jobs:
           echo "ARTIFACT_SUFFIX=$MACOS_ARCH" >> $GITHUB_ENV
 
       - name: Upload built executable
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: executable-${{ runner.os }}${{ env.ARTIFACT_SUFFIX }}
           path: dist/PyGellermann-*
